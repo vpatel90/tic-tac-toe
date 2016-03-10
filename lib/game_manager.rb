@@ -37,6 +37,7 @@ class GameManager
   end
 
   def check_win
+    return @this_players_turn if @table.check_table == true
     nil
   end
 
@@ -54,7 +55,7 @@ class GameManager
   def game_end(winner)
     refresh_display
     if winner
-      puts "#{winner} wins game end"
+      puts "#{winner.name} wins game end"
     else
       puts "Its a tie"
     end

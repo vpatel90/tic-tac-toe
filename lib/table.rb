@@ -24,7 +24,31 @@ class Table
   end
 
   def check_table
-    
+    #checks each row
+    @table_arr.each do |row|
+      return true if row.uniq.length == 1
+    end
+    #checks each column
+    col = @table_arr[0].length
+    col.times do |index|
+      holder = []
+      @table_arr.each do |row|
+        holder.push(row[index])
+      end
+      return true if holder.uniq.length == 1
+    end
+    #checks top left to bottom right diagonals
+    holder = []
+    col.times do |index|
+      holder.push(@table_arr[index][index])
+    end
+    return true if holder.uniq.length == 1
+    #checks top right to bottom left diagonals
+    holder = []
+    col.times do |index|
+      holder.push(@table_arr[index][-index-1])
+    end
+    return true if holder.uniq.length == 1
   end
 
 end
