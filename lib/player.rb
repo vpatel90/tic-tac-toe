@@ -1,6 +1,7 @@
 class Player
+  attr_accessor :name
   def initialize(name)
-    puts name
+    @name = name
   end
 end
 
