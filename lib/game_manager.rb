@@ -2,6 +2,8 @@ class GameManager
 
   def initialize(players,table)
     @players = players
+    @players[0].sym = "X"
+    @players[1].sym = "O"
     @table = table
     start_game
   end
@@ -11,6 +13,7 @@ class GameManager
     first_turn
   end
 
+  #keeps refreshing display
   def refresh_display
     @table.display_table
   end
@@ -22,13 +25,16 @@ class GameManager
     take_turn(@this_players_turn)
   end
 
+  #player takes their turn // checks if winner? // sends winner
+  #to game-end
   def take_turn(player)
     refresh_display
-    player.turn
+    player.turn(@table)
     winner = check_win
     check_end(winner)
   end
 
+  #initiates 'other' player's turn
   def change_turn
     @turn += 1
     @this_players_turn = @players.reject{|x| x == @this_players_turn}[0]
@@ -36,6 +42,7 @@ class GameManager
     take_turn(@this_players_turn)
   end
 
+  #prompts table class to check if there is a winner
   def check_win
     return @this_players_turn if @table.check_table == true
     nil

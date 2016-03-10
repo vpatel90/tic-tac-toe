@@ -4,6 +4,18 @@ class Table
     @table_arr = [[1,2,3],[4,5,6],[7,8,9]]
   end
 
+  def empty_spaces
+    empty_spaces = []
+    @table_arr.each do |row|
+      row.each do |num|
+        if num.is_a? Fixnum
+          empty_spaces.push(num)
+        end
+      end
+    end
+    return empty_spaces
+  end
+
   def display_table
     system'clear'
     puts "-" * 14
