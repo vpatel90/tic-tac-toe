@@ -16,4 +16,10 @@ class Table
     end
   end
 
+  def change_cell(change_value,symbol)
+    index1=(change_value - 1 )/3
+    index2=(change_value - 1)/3
+    @table_arr[index1][index2] = symbol
+  end
+
 end
