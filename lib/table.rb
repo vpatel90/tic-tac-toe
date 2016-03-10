@@ -23,4 +23,8 @@ class Table
     display_table
   end
 
+  def check_table
+    
+  end
+
 end
