@@ -16,8 +16,8 @@ class Game
       #input = diff_set
       players.last.set_difficulty(2)
     end
-    table = Table.new
-    GameManager.new(players,table)
+    play
+    play_again
     #Displays table and basic logic to change items in table
     # new_table.display_table
     # new_table.change(5, "O")
@@ -47,6 +47,33 @@ class Game
 
   end
 
+  def play
+    table = Table.new
+    GameManager.new(players,table)
+  end
+
+  def play_again
+    puts "Would you like to (P)lay again? check (S)core or (Q)uit"
+    puts "> "
+    validate(gets.chomp)
+  end
+
+  def validate(input)
+    case input.upcase
+    when "P"
+      play
+    when "S"
+      players.each do |player|
+        puts "#{player.name} has #{player.wins} wins"
+      end
+    when "Q"
+      exit
+    else
+      puts "Please enter a valid input"
+      play_again
+    end
+
+  end
 end
 
 new_game = Game.new(["Vivek"])
