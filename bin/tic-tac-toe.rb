@@ -13,8 +13,8 @@ class Game
     end
     if player_names.at(1) == nil
       players.push(Computer.new("Nightmaretron"))
-      input = diff_set
-      players.last.set_difficulty(input)
+      #input = diff_set
+      players.last.set_difficulty(2)
     end
     table = Table.new
     GameManager.new(players,table)
@@ -49,4 +49,4 @@ class Game
 
 end
 
-new_game = Game.new(["Vivek","Van"])
+new_game = Game.new(["Vivek"])

@@ -63,4 +63,33 @@ class Table
     return true if holder.uniq.length == 1
   end
 
+  def check_almost_win
+    #checks each row
+    arr = []
+    @table_arr.each do |row|
+      arr.push(row)
+    end
+    #checks each column
+    col = @table_arr[0].length
+    col.times do |index|
+      holder = []
+      @table_arr.each do |row|
+        holder.push(row[index])
+      end
+      arr.push(holder)
+    end
+    #checks top left to bottom right diagonals
+    holder = []
+    col.times do |index|
+      holder.push(@table_arr[index][index])
+    end
+    arr.push(holder)
+    #checks top right to bottom left diagonals
+    holder = []
+    col.times do |index|
+      holder.push(@table_arr[index][-index-1])
+    end
+    arr.push(holder)
+    return arr
+  end
 end

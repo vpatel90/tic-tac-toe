@@ -41,6 +41,9 @@ class Computer < Player
   end
   def turn(table)
     super
+    # @table = table
+    # @valid_input = @table.empty_spaces
+    # puts "#{@name} its your turn!"
     puts "I am thinking"
     sleep 1
     case @difficulty
@@ -54,9 +57,28 @@ class Computer < Player
   end
 
   def easy_mode
+    @table.change(@valid_input.sample, @sym)
   end
 
   def normal_mode
+    arr = @table.check_almost_win
+    temp_arr = []
+    arr.each do |row|
+      if row.uniq.length == 2 && (row.include?(@sym) == false)
+        temp_arr.push(row)
+      end
+    end
+    unless temp_arr.empty?
+      num = 0
+      temp_arr[0].each do |x|
+        if x.class == Fixnum
+          num = x
+        end
+      end
+      @table.change(num, @sym)
+    else
+      @table.change(@valid_input.sample, @sym)
+    end
   end
 
   def nightmare_mode
