@@ -63,7 +63,7 @@ class Computer < Player
   def normal_mode
     iWin = @table.check_almost_win
     my_move = []
-    iWIn.each do |row|
+    iWin.each do |row|
       if row.uniq.length == 2 && (row.include?(@sym))
         my_move.push(row)
       end
@@ -75,6 +75,7 @@ class Computer < Player
           num = x
         end
       end
+      require 'pry' ; binding.pry
       @table.change(num,@sym)
     else
     end
