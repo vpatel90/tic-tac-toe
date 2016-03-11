@@ -61,33 +61,49 @@ class Computer < Player
   end
 
   def normal_mode
-    iWin = @table.check_almost_win
+    # iWin = @table.check_almost_win
+    # my_move = []
+    # iWin.each do |row|
+    #   if row.uniq.length == 2 && (row.include?(@sym))
+    #     my_move.push(row)
+    #   end
+    # end
+    # unless my_move.empty?
+    #   num = nil
+    #   my_move[0].each do |x|
+    #     if x.class == Fixnum
+    #       num = x
+    #     end
+    #   end
+    #   require 'pry' ; binding.pry
+    #   @table.change(num,@sym)
+    # else
+    # end
+    ##AI Play's defense if player is about to win
+    almost_losing = @table.check_almost_win
+    big_threat = []
     my_move = []
-    iWin.each do |row|
-      if row.uniq.length == 2 && (row.include?(@sym))
-        my_move.push(row)
+    almost_losing.each do |row|
+      if row.uniq.length == 2 && (row.include?(@sym) == false)
+        big_threat.push(row)
+      elsif row.uniq.length == 2 && (row.count(@sym) == 2)
+        row.each do |x|
+          if x.class == Fixnum
+            my_move.push(row)
+          end
+        end
       end
     end
-    unless my_move.empty?
-      num = nil
+    if my_move.empty? == false
+      num = 0
       my_move[0].each do |x|
         if x.class == Fixnum
           num = x
         end
       end
       require 'pry' ; binding.pry
-      @table.change(num,@sym)
-    else
-    end
-    ##AI Play's defense if player is about to win
-    almost_losing = @table.check_almost_win
-    big_threat = []
-    almost_losing.each do |row|
-      if row.uniq.length == 2 && (row.include?(@sym) == false)
-        big_threat.push(row)
-      end
-    end
-    unless big_threat.empty?
+      @table.change(num, @sym)
+    elsif big_threat.empty? == false
       num = 0
       big_threat[0].each do |x|
         if x.class == Fixnum

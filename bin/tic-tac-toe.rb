@@ -17,7 +17,6 @@ class Game
       @players.last.set_difficulty(2)
     end
     play
-    play_again
     #Displays table and basic logic to change items in table
     # new_table.display_table
     # new_table.change(5, "O")
@@ -50,6 +49,7 @@ class Game
   def play
     table = Table.new
     GameManager.new(@players,table)
+    play_again
   end
 
   def play_again
