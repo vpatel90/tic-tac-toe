@@ -57,28 +57,12 @@ class Computer < Player
   end
 
   def easy_mode
+    ##AI chooses randomly
     @table.change(@valid_input.sample, @sym)
   end
 
   def normal_mode
-    # iWin = @table.check_almost_win
-    # my_move = []
-    # iWin.each do |row|
-    #   if row.uniq.length == 2 && (row.include?(@sym))
-    #     my_move.push(row)
-    #   end
-    # end
-    # unless my_move.empty?
-    #   num = nil
-    #   my_move[0].each do |x|
-    #     if x.class == Fixnum
-    #       num = x
-    #     end
-    #   end
-    #   require 'pry' ; binding.pry
-    #   @table.change(num,@sym)
-    # else
-    # end
+    ## AI chooses the win if possible
     ##AI Play's defense if player is about to win
     almost_losing = @table.check_almost_win
     big_threat = []
@@ -101,7 +85,6 @@ class Computer < Player
           num = x
         end
       end
-      require 'pry' ; binding.pry
       @table.change(num, @sym)
     elsif big_threat.empty? == false
       num = 0
