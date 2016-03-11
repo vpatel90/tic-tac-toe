@@ -61,16 +61,34 @@ class Computer < Player
   end
 
   def normal_mode
-    arr = @table.check_almost_win
-    temp_arr = []
-    arr.each do |row|
-      if row.uniq.length == 2 && (row.include?(@sym) == false)
-        temp_arr.push(row)
+    iWin = @table.check_almost_win
+    my_move = []
+    iWIn.each do |row|
+      if row.uniq.length == 2 && (row.include?(@sym))
+        my_move.push(row)
       end
     end
-    unless temp_arr.empty?
+    unless my_move.empty?
       num = 0
-      temp_arr[0].each do |x|
+      my_move[0].each do |x|
+        if x.class == Fixnum
+          num = x
+        end
+      end
+      @table.change(num,@sym)
+    else
+    end
+    ##AI Play's defense if player is about to win
+    almost_losing = @table.check_almost_win
+    big_threat = []
+    almost_losing.each do |row|
+      if row.uniq.length == 2 && (row.include?(@sym) == false)
+        big_threat.push(row)
+      end
+    end
+    unless big_threat.empty?
+      num = 0
+      big_threat[0].each do |x|
         if x.class == Fixnum
           num = x
         end
