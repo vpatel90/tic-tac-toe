@@ -69,7 +69,7 @@ class Computer < Player
       end
     end
     unless my_move.empty?
-      num = 0
+      num = nil
       my_move[0].each do |x|
         if x.class == Fixnum
           num = x

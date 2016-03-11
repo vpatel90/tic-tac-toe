@@ -7,14 +7,14 @@ require_relative '../lib/game_manager'
 
 class Game
   def initialize(player_names)
-    players = []
+    @players = []
     player_names.each do |name|
-      players.push(Human.new(name))
+      @players.push(Human.new(name))
     end
     if player_names.at(1) == nil
-      players.push(Computer.new("Nightmaretron"))
+      @players.push(Computer.new("Nightmaretron"))
       #input = diff_set
-      players.last.set_difficulty(2)
+      @players.last.set_difficulty(2)
     end
     play
     play_again
@@ -49,7 +49,7 @@ class Game
 
   def play
     table = Table.new
-    GameManager.new(players,table)
+    GameManager.new(@players,table)
   end
 
   def play_again
@@ -63,9 +63,10 @@ class Game
     when "P"
       play
     when "S"
-      players.each do |player|
+      @players.each do |player|
         puts "#{player.name} has #{player.wins} wins"
       end
+      play_again
     when "Q"
       exit
     else
