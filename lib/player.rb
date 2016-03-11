@@ -1,9 +1,10 @@
 class Player
-  attr_accessor :name, :wins, :sym
-  def initialize(name)
+  attr_accessor :name, :wins, :sym, :is_ai
+  def initialize(name, sym)
     @name = name
     @wins = 0
-    @sym = ""
+    @sym = sym
+    @is_ai = false
   end
 
   def turn(table)
@@ -35,16 +36,54 @@ class Human < Player
 end
 
 class Computer < Player
+  def initialize(name, sym)
+    @name = name
+    @wins = 0
+    @sym = sym
+    @is_ai = true
+  end
+
   def set_difficulty(difficulty)
     @difficulty = difficulty
     puts @difficulty
+  end
+
+  def gloat(winner)
+    ##Called when AI wins
+    puts "#{winner.name} > I WIN!"
+    `say You cannot defeat me! Will you dare to challenge Nightmaretron again!`
+  end
+
+  def rematch(winner)
+    puts "#{winner.name}, you got lucky"
+    `say you got lucky, challenge #{@name} again if you dare!`
+  end
+
+  def smack_talk
+    smack_talk_arr = ["Is that the best you got?",
+                      "Ha! I got you now",
+                      "My cat is smarter than you",
+                      "How did you survive this long",
+                      "Your existence is a curse for humanity",
+                      "Shrek is love",
+                      "Perhaps you should try an easier game",
+                      "You are smart enough to be republican candidate",
+                      "Do your friends know how stupid you are? Do you even have friends?",
+                      "Your parents must be sooo..... disappointed",
+                      "DIE DIE DIE MUA HA HA HA HA HA"]
+    smack_talk = smack_talk_arr.sample
+    return smack_talk
   end
   def turn(table)
     super
     # @table = table
     # @valid_input = @table.empty_spaces
     # puts "#{@name} its your turn!"
-    puts "I am thinking"
+    unless @table.empty
+      talk = smack_talk
+      puts talk
+      `say #{talk}`
+    end
     sleep 1
     case @difficulty
     when 1
@@ -64,7 +103,7 @@ class Computer < Player
   def normal_mode
     ## AI chooses the win if possible
     ##AI Play's defense if player is about to win
-    almost_losing = @table.check_almost_win
+    almost_losing = @table.get_rows_cols_diag
     big_threat = []
     my_move = []
     almost_losing.each do |row|

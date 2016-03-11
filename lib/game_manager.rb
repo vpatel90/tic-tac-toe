@@ -1,10 +1,9 @@
 class GameManager
 
-  def initialize(players,table)
+  def initialize(players,table, renderer)
     @players = players
-    @players[0].sym = "X"
-    @players[1].sym = "O"
     @table = table
+    @renderer = renderer
     start_game
   end
 
@@ -15,6 +14,7 @@ class GameManager
 
   #keeps refreshing display
   def refresh_display
+    @renderer.screen_render
     @table.display_table
   end
   #Game Manager determins first turn
@@ -62,7 +62,17 @@ class GameManager
   def game_end(winner)
     refresh_display
     if winner
-      puts "#{winner.name} wins game end"
+      if winner.is_ai
+        winner.gloat(winner)
+      else
+        loser = (@players.reject{|x| x == winner})[0]
+        if loser.is_ai
+          loser.rematch(winner)
+        end
+      end
+      puts "#{winner.name} wins the game!"
+      puts
+
     else
       puts "Its a tie"
     end
