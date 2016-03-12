@@ -1,45 +1,10 @@
+require_relative '../lib/renderer'
 require_relative '../lib/player'
 require_relative '../lib/table'
 require_relative '../lib/game_manager'
 # Starts game => Creates Players (Human and Computer)
 # Creates game table
 # Creates game manager
-class Renderer
-  def screen_render
-    system'clear'
-    heading
-  end
-
-  def heading
-    puts "TIC TAC TOE".rjust(15," ")
-    puts '-' * 20
-  end
-
-  def render_emoji_choice(emoji_arr, name)
-    puts "#{name} Please Select your Icon"
-    emoji_arr.each_with_index do |emoji, index|
-      puts "#{index+1}. #{emoji}"
-    end
-    puts
-    get_input(emoji_arr)
-  end
-
-  def get_input(emoji_arr)
-    print "> "
-    input = validate_input(gets.chomp.to_i, emoji_arr)
-    return input
-  end
-
-  def validate_input(input,emoji_arr)
-    case input.to_i
-    when (1..emoji_arr.length)
-      return input.to_i
-    else
-      puts "Please Enter a Valid input!"
-      get_input(emoji_arr)
-    end
-  end
-end
 
 class Game
   def initialize(player_names, renderer)
@@ -54,8 +19,9 @@ class Game
     end
     if player_names.at(1) == nil
       @players.push(Computer.new("Nightmaretron",emoji.sample))
-      input = diff_set
-      @players.last.set_difficulty(input)
+      # input = diff_set
+      @players.last.set_difficulty(3)
+      @players.last.get_player(@players.first)
     end
     play
 
@@ -151,7 +117,7 @@ def get_names(n)
 end
 renderer = Renderer.new
 renderer.screen_render
-puts "Are you playing with a (F)riend or would you like to challenge (N)ightmaretron?"
-input = get_input
-names = get_names(input)
-new_game = Game.new(names, renderer)
+# puts "Are you playing with a (F)riend or would you like to challenge (N)ightmaretron?"
+# input = get_input
+# names = get_names(input)
+new_game = Game.new(["Vivek"], renderer)

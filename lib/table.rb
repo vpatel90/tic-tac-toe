@@ -29,6 +29,13 @@ class Table
     end
   end
 
+  def change_in_secret(change_value, symbol)
+    @empty = false
+    index1=(change_value - 1)/3
+    index2=(change_value - 1)%3
+    @table_arr[index1][index2] = symbol
+  end
+
   def change(change_value, symbol)
     @empty = false
     index1=(change_value - 1)/3
@@ -42,6 +49,7 @@ class Table
     possibilities.each do |arr|
       return true if arr.uniq.length == 1
     end
+    return false
   end
 
   def get_rows_cols_diag

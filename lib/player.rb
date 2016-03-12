@@ -70,19 +70,17 @@ class Computer < Player
                       "You are smart enough to be republican candidate",
                       "Do your friends know how stupid you are? Do you even have friends?",
                       "Your parents must be sooo..... disappointed",
-                      "DIE DIE DIE muah HA HA HA HA HA"]
+                      "DIE DIE DIE muah HA HA HA HA HA",
+                      "This just isn't your day"]
     smack_talk = smack_talk_arr.sample
     return smack_talk
   end
   def turn(table)
     super
-    # @table = table
-    # @valid_input = @table.empty_spaces
-    # puts "#{@name} its your turn!"
     unless @table.empty
       talk = smack_talk
       puts talk
-      `say #{talk}`
+      #`say #{talk}`
     end
     sleep 1
     case @difficulty
@@ -138,7 +136,89 @@ class Computer < Player
     end
   end
 
-  def nightmare_mode
+
+  def get_player(player)
+    @human = player
   end
+
+  def nightmare_mode
+    original_emptyspaces = @table.empty_spaces
+    empty_spaces = original_emptyspaces.dup
+    depth = empty_spaces.length
+    best_cell = [0,0]
+    @counter = 0
+    empty_spaces.each do |cell|
+      points = 0
+      points = negamax(cell, @table, depth, points, @name)
+      empty_spaces = original_emptyspaces.dup
+      empty_spaces.each do |space|
+        @table.change_in_secret(space, space)
+      end
+
+      if best_cell[0] ==  0
+        best_cell = [points, cell]
+      elsif best_cell[0] < points
+        best_cell = [points, cell]
+      elsif best_cell[0] == points
+        best_cell.push(cell)
+      end
+    end
+    best_cell.shift
+    require 'pry'; binding.pry
+    @table.change(best_cell.sample,@sym)
+
+  end
+
+  def negamax(cell, table, depth, points, player)
+    @counter += 1
+    if player == @name
+      sym = @sym
+    else
+      sym = @human.sym
+    end
+
+    table.change_in_secret(cell, sym)
+
+    if table.check_table == true
+
+      if player == @name
+        return points += 2 * depth
+      else
+        return points -=2
+      end
+    else
+      points
+    end
+
+    depth -= 1
+    if depth == 0
+      return points
+    end
+
+    if player == @name
+      player = @human.name
+    else
+      player = @name
+    end
+
+    original_emptyspaces = table.empty_spaces
+    empty_spaces = original_emptyspaces.dup
+
+
+    empty_spaces.each do |cell|
+
+      points = points
+      points = points + negamax(cell, table, depth, points, player)
+      empty_spaces = original_emptyspaces.dup
+      empty_spaces.each do |space|
+        table.change_in_secret(space, space)
+      end
+
+
+    end
+    return points
+
+  end
+
 
 end
