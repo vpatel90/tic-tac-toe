@@ -20,7 +20,7 @@ class GameManager
   #Game Manager determins first turn
   def first_turn
     @turn = 1
-    @this_players_turn = @players.sample
+    @this_players_turn = @players[0]
     puts "#{@this_players_turn.name} starts"
     take_turn(@this_players_turn)
   end

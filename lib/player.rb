@@ -132,7 +132,7 @@ class Computer < Player
       end
       @table.change(num, @sym)
     else
-      @table.change(@valid_input.sample, @sym)
+      easy_mode
     end
   end
 
@@ -143,29 +143,33 @@ class Computer < Player
 
   def nightmare_mode
     original_emptyspaces = @table.empty_spaces
-    empty_spaces = original_emptyspaces.dup
+    empty_spaces = []
+
+    original_emptyspaces.map do |space|
+      empty_spaces.push([0,space])
+    end
+
     depth = empty_spaces.length
-    best_cell = [0,0]
+    best_cell = []
     @counter = 0
-    empty_spaces.each do |cell|
-      points = 0
+    empty_spaces.each do |index|
+      points = index[0]
+      cell = index[1]
       points = negamax(cell, @table, depth, points, @name)
-      empty_spaces = original_emptyspaces.dup
-      empty_spaces.each do |space|
+
+      original_emptyspaces.each do |space|
         @table.change_in_secret(space, space)
       end
 
-      if best_cell[0] ==  0
-        best_cell = [points, cell]
-      elsif best_cell[0] < points
-        best_cell = [points, cell]
-      elsif best_cell[0] == points
-        best_cell.push(cell)
-      end
+      best_cell.push([points,cell])
+
+
     end
-    best_cell.shift
-    require 'pry'; binding.pry
-    @table.change(best_cell.sample,@sym)
+
+    best_cell = best_cell.sort
+
+
+    @table.change(best_cell.last[1],@sym)
 
   end
 
@@ -178,22 +182,21 @@ class Computer < Player
     end
 
     table.change_in_secret(cell, sym)
-
     if table.check_table == true
-
       if player == @name
-        return points += 2 * depth
+        return points = 10
       else
-        return points -=2
+        return points = -10
       end
     else
-      points
+      points = points
     end
 
-    depth -= 1
+
     if depth == 0
       return points
     end
+    depth -= 1
 
     if player == @name
       player = @human.name
@@ -202,22 +205,29 @@ class Computer < Player
     end
 
     original_emptyspaces = table.empty_spaces
-    empty_spaces = original_emptyspaces.dup
+    empty_spaces = []
 
-
-    empty_spaces.each do |cell|
-
-      points = points
-      points = points + negamax(cell, table, depth, points, player)
-      empty_spaces = original_emptyspaces.dup
-      empty_spaces.each do |space|
-        table.change_in_secret(space, space)
-      end
-
-
+    original_emptyspaces.map do |space|
+      empty_spaces.push([0,space])
     end
-    return points
+    original_points = points
+    best_cell = []
 
+    empty_spaces.each do |index|
+      points = index[0]
+      cell = index[1]
+      points = points + negamax(cell, table, depth, points, player)
+      original_emptyspaces.each do |space|
+        @table.change_in_secret(space, space)
+      end
+      best_cell.push([points,cell])
+    end
+
+    points_to_return = 0
+    best_cell.each do |index|
+      points_to_return = points_to_return + index[0]
+    end
+    return points_to_return
   end
 
 
