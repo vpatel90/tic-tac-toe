@@ -45,7 +45,7 @@ class Game
   def initialize(player_names, renderer)
     @renderer = renderer
     @renderer.screen_render
-    emoji = ["👻","👽","🤖","😸","🐸","🐶","😀", "X", "O"]
+    emoji = ["👻","👽","🤖","😸","🐸","🐶","😀"]
     @players = []
     player_names.each do |name|
       player_emoji = emoji[@renderer.render_emoji_choice(emoji, name) - 1]

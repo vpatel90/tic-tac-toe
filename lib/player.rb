@@ -65,12 +65,12 @@ class Computer < Player
                       "My cat is smarter than you",
                       "How did you survive this long",
                       "Your existence is a curse for humanity",
-                      "Shrek is love",
+                      "Shrek is love, Shrek is life",
                       "Perhaps you should try an easier game",
                       "You are smart enough to be republican candidate",
                       "Do your friends know how stupid you are? Do you even have friends?",
                       "Your parents must be sooo..... disappointed",
-                      "DIE DIE DIE MUA HA HA HA HA HA"]
+                      "DIE DIE DIE muah HA HA HA HA HA"]
     smack_talk = smack_talk_arr.sample
     return smack_talk
   end
