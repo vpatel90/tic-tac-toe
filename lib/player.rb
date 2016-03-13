@@ -197,7 +197,7 @@ class Computer < Player
     # end
     # require 'pry' ; binding.pry
     # @table.change(best_node.cell, @sym)
-    best_move = win_if_possible
+    best_move = nil
     if best_move == nil
       original_emptyspaces = @table.empty_spaces
       empty_spaces = []
