@@ -20,8 +20,8 @@ class Game
     end
     if player_names.at(1) == nil
       @players.push(Computer.new("Nightmaretron",emoji.sample))
-      input = diff_set
-      @players.last.set_difficulty(input)
+      #input = diff_set
+      @players.last.set_difficulty(3)
       @players.last.get_player(@players.first)
     end
     play

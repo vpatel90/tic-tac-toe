@@ -141,6 +141,32 @@ class Computer < Player
     @human = player
   end
 
+  def win_if_possible
+    almost_losing = @table.get_rows_cols_diag
+    my_move = []
+    almost_losing.each do |row|
+      if row.uniq.length == 2 && (row.count(@sym) == 2)
+        row.each do |x|
+          if x.class == Fixnum
+            my_move.push(row)
+          end
+        end
+      end
+    end
+    num = 0
+    if my_move.empty? == false
+      my_move[0].each do |x|
+        if x.class == Fixnum
+          num = x
+        end
+      end
+    end
+    if num == 0
+      return nil
+    else
+      return num
+    end
+  end
 
   def nightmare_mode
     # original_empty_cells = @table.empty_spaces
@@ -169,30 +195,45 @@ class Computer < Player
     # end
     # require 'pry' ; binding.pry
     # @table.change(best_node.cell, @sym)
+    best_move = win_if_possible
+    if best_move == nil
+      original_emptyspaces = @table.empty_spaces
+      empty_spaces = []
 
-    original_emptyspaces = @table.empty_spaces
-    empty_spaces = []
-
-    original_emptyspaces.map do |space|
-      empty_spaces.push([0,space])
-    end
-
-    depth = empty_spaces.length
-    best_cell = []
-    @counter = 0
-    empty_spaces.each do |index|
-      points = index[0]
-      cell = index[1]
-      points = negamax(cell, @table, depth, points, @name)
-
-      original_emptyspaces.each do |space|
-        @table.change_in_secret(space, space)
+      original_emptyspaces.map do |space|
+        empty_spaces.push([0,space])
       end
-      best_cell.push([points,cell])
+
+      depth = empty_spaces.length
+      nodearr = []
+
+      @counter = 0
+      empty_spaces.each do |index|
+        points = index[0]
+        cell = index[1]
+        node = Neganode.new(cell, [], points, @name, depth)
+        negamax(node, @table, depth, points, @name)
+        original_emptyspaces.each do |space|
+          @table.change_in_secret(space, space)
+        end
+        nodearr.push(node)
+      end
+      require 'pry' ; binding.pry
+      best_node = nil
+      nodearr.each do |node|
+        if best_node == nil
+          best_node = node
+        elsif best_node.score < node.score
+          best_node = node
+        end
+      end
+
+      @table.change(best_node.cell, @sym)
+    else
+      @table.change(best_move, @sym)
     end
-    #require 'pry' ; binding.pry
-    best_cell = best_cell.sort
-    @table.change(best_cell.last[1],@sym)
+
+
 
   end
 
@@ -239,20 +280,20 @@ class Computer < Player
   #     end
   #     nodearr.push(node)
   #   end
-  #   best_node = nil
+  #   parent_score = 0
   #   nodearr.each do |node|
-  #     if best_node == nil
-  #       best_node = node
-  #     elsif best_node.score < node.score && node.state == @name
-  #       best_node = node
-  #     elsif best_node.score > node.score && node.state == @human.name
-  #       best_node = node
+  #     if node.state == @name && node.score > 0
+  #       parent_score = parent_score + node.score
+  #     elsif node.state == @human.name && node.score < 0
+  #       parent_score = parent_score + node.score
   #     end
+  #
   #   end
-  #   parent_node.score = best_node.score
+  #   parent_node.score = parent_score
   # end
 
-  def negamax(cell, table, depth, points, player)
+  def negamax(node, table, depth, points, player)
+    cell = node.cell
     @counter += 1
     if player == @name
       sym = @sym
@@ -263,19 +304,19 @@ class Computer < Player
     table.change_in_secret(cell, sym)
     if table.check_table == true
       if player == @name
-        return points = 10
+        return node.score = 10
       else
-        return points = -10
+        return node.score = -10
       end
     else
-      points = points
+      node.score = 0
     end
 
-
-    if depth == 0
-      return points
-    end
     depth -= 1
+    if depth == 0
+      return node.score = 0
+    end
+
 
     if player == @name
       player = @human.name
@@ -283,6 +324,7 @@ class Computer < Player
       player = @name
     end
 
+    parent_node = node
     original_emptyspaces = table.empty_spaces
     empty_spaces = []
 
@@ -290,23 +332,38 @@ class Computer < Player
       empty_spaces.push([0,space])
     end
     original_points = points
-    best_cell = []
+    nodearr = parent_node.child_nodes
 
     empty_spaces.each do |index|
       points = index[0]
       cell = index[1]
-      points = points + negamax(cell, table, depth, points, player)
+      node = Neganode.new(cell,[],points,player,depth,parent_node)
+      negamax(node, table, depth, points, player)
       original_emptyspaces.each do |space|
         @table.change_in_secret(space, space)
       end
-      best_cell.push([points,cell])
+      nodearr.push(node)
     end
 
-    points_to_return = 0
-    best_cell.each do |index|
-      points_to_return = points_to_return + index[0]
+    best_score = []
+    nodearr.each do |node|
+      # best_score.push(node.score)
+      parent_node.score =  parent_node.score + node.score
+      if (parent_node.state == @name || parent_node.state == nil )&& node.score > parent_node.score
+      elsif parent_node.state == @human.name && node.score < parent_node.score
+        parent_node.score = parent_node.score - node.score
+      elsif
+        parent_node.score = parent_node.score
+      end
     end
-    return points_to_return
+    # best_score = best_score.sort
+    # if parent_node.state == @name || parent_node.state == nil
+    #   parent_node.score = best_score.last
+    # else
+    #   parent_node.score = best_score.first
+    # end
+
+
 
   end
 
