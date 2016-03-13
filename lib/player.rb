@@ -133,6 +133,7 @@ class Computer < Player
         end
       end
       @table.change(num, @sym)
+
     else
       easy_mode
     end
@@ -170,6 +171,30 @@ class Computer < Player
     end
   end
 
+  def stop_enemy_from_winning
+    almost_losing = @table.get_rows_cols_diag
+    big_threat = []
+    almost_losing.each do |row|
+      if row.uniq.length == 2 && (row.include?(@sym) == false)
+        big_threat.push(row)
+      end
+    end
+    num = 0
+    if big_threat.empty? == false
+      big_threat[0].each do |x|
+        if x.class == Fixnum
+          num = x
+        end
+      end
+    end
+    if num == 0
+      return nil
+    else
+      return num
+    end
+
+  end
+
   def nightmare_mode
     # original_empty_cells = @table.empty_spaces
     # nodearr = []
@@ -197,8 +222,9 @@ class Computer < Player
     # end
     # require 'pry' ; binding.pry
     # @table.change(best_node.cell, @sym)
-    best_move = nil
-    if best_move == nil
+    best_move = win_if_possible
+    second_best_move = stop_enemy_from_winning
+    if best_move == nil && stop_enemy_from_winning == nil
       original_emptyspaces = @table.empty_spaces
       empty_spaces = []
 
@@ -229,10 +255,14 @@ class Computer < Player
           best_node = node
         end
       end
-      require 'pry' ; binding.pry
+      #require 'pry' ; binding.pry
       @table.change(best_node.cell, @sym)
     else
-      @table.change(best_move, @sym)
+      if best_move != nil
+        @table.change(best_move, @sym)
+      elsif second_best_move != nil
+        @table.change(second_best_move, @sym)
+      end
     end
 
 
