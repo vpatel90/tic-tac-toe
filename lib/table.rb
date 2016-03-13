@@ -1,7 +1,9 @@
 class Table
   attr_accessor :empty
   def initialize
-    @table_arr = [[1,2,3],[4,5,6],[7,8,9]]
+    @table_arr = [[1,2,3],
+                  [4,5,6],
+                  [7,8,9]]
     @empty = true
   end
 

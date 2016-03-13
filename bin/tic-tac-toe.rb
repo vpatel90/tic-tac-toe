@@ -2,6 +2,7 @@ require_relative '../lib/renderer'
 require_relative '../lib/player'
 require_relative '../lib/table'
 require_relative '../lib/game_manager'
+require_relative '../lib/negamax'
 # Starts game => Creates Players (Human and Computer)
 # Creates game table
 # Creates game manager
@@ -19,8 +20,8 @@ class Game
     end
     if player_names.at(1) == nil
       @players.push(Computer.new("Nightmaretron",emoji.sample))
-      # input = diff_set
-      @players.last.set_difficulty(3)
+      input = diff_set
+      @players.last.set_difficulty(input)
       @players.last.get_player(@players.first)
     end
     play
@@ -117,7 +118,7 @@ def get_names(n)
 end
 renderer = Renderer.new
 renderer.screen_render
-# puts "Are you playing with a (F)riend or would you like to challenge (N)ightmaretron?"
-# input = get_input
-# names = get_names(input)
+puts "Are you playing with a (F)riend or would you like to challenge (N)ightmaretron?"
+input = get_input
+names = get_names(input)
 new_game = Game.new(["Vivek"], renderer)
