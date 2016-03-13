@@ -20,8 +20,8 @@ class Game
     end
     if player_names.at(1) == nil
       @players.push(Computer.new("Nightmaretron",emoji.sample))
-      #input = diff_set
-      @players.last.set_difficulty(3)
+      input = diff_set
+      @players.last.set_difficulty(input)
       @players.last.get_player(@players.first)
     end
     play
@@ -32,7 +32,7 @@ class Game
     puts "How smart do you want me to me?"
     puts "(1) Easy"
     puts "(2) Normal"
-    puts "(3) Nightmare (Not Available)"#remember to modify diff_validate
+    puts "(3) Nightmare (Use at your own risk)"#remember to modify diff_validate
     print "> "
     input = diff_validate(gets.chomp)
   end
@@ -43,8 +43,8 @@ class Game
       1
     when 2
       2
-    # when 3
-    #   3
+    when 3
+      3
     else
       puts "Please enter a valid input"
       diff_set
@@ -120,5 +120,5 @@ renderer = Renderer.new
 renderer.screen_render
 puts "Are you playing with a (F)riend or would you like to challenge (N)ightmaretron?"
 input = get_input
-names = get_names(input)
-new_game = Game.new(["Vivek"], renderer)
+player_names = get_names(input)
+new_game = Game.new(player_names, renderer)

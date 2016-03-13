@@ -10,14 +10,13 @@ class Player
   def turn(table)
     @table = table
     @valid_input = @table.empty_spaces
-    puts "#{@name} its your turn!"
+    puts "#{@sym}: #{@name} its your turn!"
   end
 end
 
 class Human < Player
   def turn(table)
     super
-    #require 'pry' ; binding.pry
     print "> "
     input = validate(gets.chomp)
     @table.change(input.to_i,@sym)
@@ -45,7 +44,7 @@ class Computer < Player
 
   def set_difficulty(difficulty)
     @difficulty = difficulty
-    puts @difficulty
+
   end
 
   def gloat(winner)
@@ -70,8 +69,7 @@ class Computer < Player
                       "You are smart enough to be republican candidate",
                       "Do your friends know how stupid you are? Do you even have friends?",
                       "Your parents must be sooo..... disappointed",
-                      "DIE DIE DIE muah HA HA HA HA HA",
-                      "This just isn't your day"]
+                      "DIE DIE DIE muah HA HA HA HA HA"]
     smack_talk = smack_talk_arr.sample
     return smack_talk
   end
@@ -81,6 +79,10 @@ class Computer < Player
       talk = smack_talk
       puts talk
       `say #{talk}`
+    else
+      if @difficulty == 3
+        `say You are not prepared to face me!`
+      end
     end
     sleep 1
     case @difficulty
@@ -218,7 +220,7 @@ class Computer < Player
         end
         nodearr.push(node)
       end
-      require 'pry' ; binding.pry
+      #require 'pry' ; binding.pry
       best_node = nil
       nodearr.each do |node|
         if best_node == nil
@@ -227,7 +229,7 @@ class Computer < Player
           best_node = node
         end
       end
-
+      require 'pry' ; binding.pry
       @table.change(best_node.cell, @sym)
     else
       @table.change(best_move, @sym)
@@ -350,6 +352,7 @@ class Computer < Player
       # best_score.push(node.score)
       parent_node.score =  parent_node.score + node.score
       if (parent_node.state == @name || parent_node.state == nil )&& node.score > parent_node.score
+        parent_node.score =  parent_node.score + node.score
       elsif parent_node.state == @human.name && node.score < parent_node.score
         parent_node.score = parent_node.score - node.score
       elsif

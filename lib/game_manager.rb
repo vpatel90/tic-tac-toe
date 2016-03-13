@@ -38,7 +38,6 @@ class GameManager
   def change_turn
     @turn += 1
     @this_players_turn = @players.reject{|x| x == @this_players_turn}[0]
-    puts "now its #{@this_players_turn.name}'s turn"
     take_turn(@this_players_turn)
   end
 
