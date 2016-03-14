@@ -3,6 +3,8 @@ require_relative '../lib/player'
 require_relative '../lib/table'
 require_relative '../lib/game_manager'
 require_relative '../lib/negamax'
+require_relative '../lib/computer'
+require_relative '../lib/human'
 # Starts game => Creates Players (Human and Computer)
 # Creates game table
 # Creates game manager

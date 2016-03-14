@@ -62,7 +62,7 @@ class GameManager
     refresh_display
     if winner
       if winner.is_ai
-        winner.gloat(winner)
+        #winner.gloat(winner)
       else
         loser = (@players.reject{|x| x == winner})[0]
         if loser.is_ai
@@ -73,6 +73,7 @@ class GameManager
       puts
 
     else
+      @players[1].gloat
       puts "Its a tie"
     end
   end
