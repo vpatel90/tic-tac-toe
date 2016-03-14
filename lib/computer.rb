@@ -173,6 +173,7 @@ class Computer < Player
 
       depth = empty_spaces.length
       nodearr = []
+      @terminal_nodes = []
 
       @counter = 0
       empty_spaces.each do |index|
@@ -193,6 +194,7 @@ class Computer < Player
           best_node = node
         end
       end
+
       @table.change(best_node.cell, @sym)
     else
       if best_move != nil
@@ -216,9 +218,13 @@ class Computer < Player
     table.change_in_secret(cell, sym)
     if table.check_table == true
       if player == @name
-        return node.score = 10
+        node.score = 10
+        @terminal_nodes.push(node)
+        return
       else
-        return node.score = -10
+        node.score = -10
+        @terminal_nodes.push(node)
+        return
       end
     else
       node.score = 0
