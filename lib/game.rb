@@ -2,7 +2,7 @@ class Game
   def initialize(player_names, renderer)
     @renderer = renderer
     @renderer.screen_render
-    emoji = ["👻","👽","🤖","😸","🐸","🐶","😀"]
+    emoji = ["👻","👽","🕵","😸","🐸","🐶","😀"]
     @players = []
     player_names.each do |name|
       player_emoji = emoji[@renderer.render_emoji_choice(emoji, name) - 1]
@@ -10,7 +10,7 @@ class Game
       @players.push(Human.new(name, player_emoji))
     end
     if player_names.at(1) == nil
-      @players.push(Computer.new("Nightmaretron",emoji.sample))
+      @players.push(Computer.new("Nightmaretron","🤖"))
       input = diff_set
       @players.last.set_difficulty(input)
       @players.last.get_player(@players.first)
