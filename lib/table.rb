@@ -21,13 +21,14 @@ class Table
 
   def display_table
     puts
-    puts " -  -  -  -  -  -  - "
+    puts Paint[" -  -  -  -  -  -  - ", :green]
     @table_arr.each do |row|
       row.each do |num|
-        print " |  #{num} ".rjust(5, " ")
+        print Paint[" |",:green]
+        print "#{num} ".rjust(4, " ")
       end
-      puts "|".rjust(2, " ")
-      puts " -  -  -  -  -  -  - "
+      puts Paint["|".rjust(2, " "), :green]
+      puts Paint[" -  -  -  -  -  -  - ", :green]
     end
   end
 

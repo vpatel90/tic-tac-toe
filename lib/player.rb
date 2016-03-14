@@ -10,6 +10,6 @@ class Player
   def turn(table)
     @table = table
     @valid_input = @table.empty_spaces
-    puts "#{@sym}: #{@name} its your turn!"
+    puts "#{@sym} : #{@name} its your turn!"
   end
 end
