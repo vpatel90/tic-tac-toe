@@ -1,6 +1,6 @@
-##Tic - Tac - TOE
+## Tic - Tac - TOE
 
-###Player vs Player
+### Player vs Player
 
-###Player vs Nightmaretron (AI)
+### Player vs Nightmaretron (AI)
 * 3 difficulties
